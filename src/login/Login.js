@@ -1,59 +1,63 @@
-import React, { Component, useState, useHistory } from "react";
-import apiService from "../services/apiService";
-
-const initialUser = {
-    username: '',
-    password: ''
-}
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 
 const Login = () => {
 
-    // const { username, password } = data;
-    // const history = useHistory();
-
-    // function validateForm() {
-    //     return username.length > 0 && password.length > 0;
-    // }
-
-    // const changeHandler = e => {
-    //     setData({ ...data, [e.target.name]: [e.target.value] })
-    // }
-
-    // const submitHandler = e => {
-    //     console.log(data);
-    //     isvaidUser(data);
-    // }
-
-    const [user, setUserData] = useState(initialUser);
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    let history=useHistory();
     
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setUserData({
-            ...user,
-            [name]: value ? value : null,
-        });
-    };
+    function validateForm() {
+        return username.length > 0 && password.length > 0;
+      }
 
-    const checkUserDetails = async (user) => {
-        apiService.post('/memberRegPortal/loginMemberPortalDetails', user).then(response => {
-            console.log("response::", response);
-        }).catch(error => {
-                console.log("error::", error);
-        });
-    };
+    async function sendLoginRequest() {
+        console.log("I am sending a request:");
+        const reqBody = {
+            username: username,
+            password: password,
+        };
+        try {
+        await fetch("http://localhost:8081/memberRegPortal/loginMemberPortalDetails", {
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+                },
+            method: 'POST',
+            body: JSON.stringify(reqBody),
+        }).then(response => { 
+            console.log(response);
+            if(!response.ok) {
+                throw Error('could not fetch the data for that resource');
+            } else {
+                alert("Login was successful.");
+                history.push("/registration")
+            }
+            return response;
+        })
+        } catch (err) {
+            console.log(err);
+        }
+    }
 
     return (
-        <div className="Login">
+        <>
             <center>
-                <form>
-                    <label htmlFor="username">User Name:</label>
-                    <input type="text"  name='username' value={user.username}  onChange={handleInputChange} /> <br />
-                    <label htmlFor="password">Password:</label>
-                    <input type="password" name="password" value={user.password} onChange={handleInputChange} /> <br />
-                    <button onClick={() => checkUserDetails(user)}>Login</button>
-                </form>
+                <h3>Member Login Portal</h3>
+                <div>
+                    <label htmlFor="username">Username: </label>
+                    <input type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} /> <br />
+                </div>
+                <div>
+                    <label htmlFor="password">Password: </label>
+                    <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} /> <br />
+                </div>
+                <div>
+                    <button id="submit" type="button"disabled={!validateForm()} onClick={() => { sendLoginRequest() }} >
+                        Login </button>
+                </div>
             </center>
-        </div>
+        </>
     );
 }
 

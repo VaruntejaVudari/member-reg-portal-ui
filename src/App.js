@@ -1,46 +1,26 @@
-import React, { useState } from "react";
-//import getRestDataAPIRequest from "./api/denodoAPI";
+import React from "react";
+import Login from "./login/Login";
+import Registration from "./registration/Registration";
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Claims from "./claims/Claims";
+import RegisterForm from "./registration/RegisterForm";
+import Loginform from "./login/Loginform";
+import Claimsform from "./claims/Claimsform";
 
 function App() {
 
-  const [data, setData] = useState({
-    username :'',
-    password : ''
-  });
-
-  const {username, password} = data;
-
-  function validateForm() {
-    return username.length > 0 && password.length > 0;
-  }
-
-  const changeHandler = e => {
-    setData({...data,[e.target.name]:[e.target.value]})
-  }
-
-  const submitHandler = e => {
-    console.log(data);
-    //getLoginFormViewData(data);
-  }
-
-  // function getLoginFormViewData(data) {
-  //   console.log("getLoginFormViewData:");
-  //   let configURL = 'http://localhost:8080/memberRegPortal/loginMemberPortalDetails&$format=JSON&data=${data}'
-  //   return getRestDataAPIRequest(configURL);
-  // }
-
   return (
-    <div className="Login">
-      <center>
-        <form onSubmit={submitHandler}>
-          <label>Username : </label>
-          <input type="text" name="username" value={username} onChange={changeHandler}/> <br />
-          <label>Password : </label>
-          <input type="password" name="password" value={password} onChange={changeHandler}/> <br />
-          <input type="submit" name="submit" disabled={!validateForm()}></input>
-        </form>
-      </center>
-    </div>
+    <Router>
+      <Switch>
+        {/* <Route base path="/" component={Login}></Route> */}
+        <Route path="/login" component={Login}></Route>
+        <Route path="/registration" component={Registration}></Route>
+        <Route path="/claims" component={Claims}></Route>
+        <Route path="/registerform" component={RegisterForm}></Route>
+        <Route path="/loginform" component={Loginform}></Route>
+        <Route path="/claimsform" component={Claimsform}></Route>
+      </Switch>
+    </Router>
   );
 }
 
