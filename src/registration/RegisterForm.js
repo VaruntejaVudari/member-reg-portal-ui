@@ -32,38 +32,38 @@ class RegisterForm extends React.Component {
             let fields = {};
             fields["username"] = "";
             fields["password"] = "";
-            fields["name"]="";
-            fields["dob"]="";
-            fields["contactno"]="";
-            fields["address"]="";
-            fields["country"]="";
-            fields["pan"]="";
-            fields["state"]="";
-            fields["email"]="";
+            fields["name"] = "";
+            fields["dob"] = "";
+            fields["contactno"] = "";
+            fields["address"] = "";
+            fields["country"] = "";
+            fields["pan"] = "";
+            fields["state"] = "";
+            fields["email"] = "";
             this.setState({ fields: fields });
 
             try {
-                 fetch("http://localhost:8081/memberRegPortal/registerMemberPortalDetails", {
+                fetch("http://localhost:8081/memberRegPortal/registerMemberPortalDetails", {
                     headers: {
                         "Accept": "application/json",
                         "Content-Type": "application/json"
-                        },
+                    },
                     method: 'POST',
                     body: JSON.stringify(this.state.fields),
-                }).then(response => { 
+                }).then(response => {
                     console.log(response);
-                    if(!response.ok) {
+                    if (!response.ok) {
                         throw Error('could not fetch the data for that resource');
                     } else {
                         alert("Member Registration was successful.");
                         //<Redirect replace to="/loginform"/>
-                       this.props.history.push('/loginform');
+                        this.props.history.push('/loginform');
                     }
                     return response;
                 })
-                } catch (err) {
-                    console.log(err);
-                }
+            } catch (err) {
+                console.log(err);
+            }
         }
 
 
@@ -180,9 +180,12 @@ class RegisterForm extends React.Component {
         }
 
         if (typeof fields["dob"] !== "undefined") {
-            if (!fields["dob"].match(/^[a-zA-Z ]*$/)) {
-                //formIsValid = false;
-                //errors["dob"] = "*Please enter valid dob.";
+            const regexddmmyyy = /^(0[1-9]|[12][0-9]|3[01])[/ /.](0[1-9]|1[012])[/ /.](19|20)\d\d$/;
+            if (regexddmmyyy.test(fields["dob"])) {
+                formIsValid = true;
+            } else {
+                formIsValid = false;
+                errors["dob"] = "*Please enter valid Date Of Birth, format is: DD/MM/YYYY";
             }
         }
 
@@ -192,9 +195,9 @@ class RegisterForm extends React.Component {
         }
 
         if (typeof fields["pan"] !== "undefined") {
-            if (!fields["pan"].match(/^[a-zA-Z ]*$/)) {
-                //formIsValid = false;
-                //errors["pan"] = "*Please enter valid pan no.";
+            if (!fields["pan"].match(/^([a-zA-Z]){5}[0-9]{4}([a-zA-Z]){1}?$/)) {
+                formIsValid = false;
+                errors["pan"] = "*Please enter valid pan no.";
             }
         }
 

@@ -10,7 +10,7 @@ class Loginform extends React.Component {
             fields: {},
             errors: {}
         }
-        
+
         this.handleChange = this.handleChange.bind(this);
         this.submitUserLoginForm = this.submitUserLoginForm.bind(this);
 
@@ -35,25 +35,25 @@ class Loginform extends React.Component {
             //let history=useHistory();
             try {
                 fetch("http://localhost:8081/memberRegPortal/loginMemberPortalDetails", {
-                   headers: {
-                       "Accept": "application/json",
-                       "Content-Type": "application/json"
-                       },
-                   method: 'POST',
-                   body: JSON.stringify(this.state.fields),
-               }).then(response => { 
-                   console.log(response);
-                   if(!response.ok) {
-                       throw Error('could not fetch the data for that resource');
-                   } else {
-                       alert("Login was successful.");
-                       this.props.history.push('/claimsform');
-                   }
-                   return response;
-               })
-               } catch (err) {
-                   console.log(err);
-               }
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    method: 'POST',
+                    body: JSON.stringify(this.state.fields),
+                }).then(response => {
+                    console.log(response);
+                    if (!response.ok) {
+                        throw Error('could not fetch the data for that resource');
+                    } else {
+                        alert("Login was successful.");
+                        this.props.history.push('/claimsform');
+                    }
+                    return response;
+                })
+            } catch (err) {
+                console.log(err);
+            }
         }
 
     }
@@ -107,7 +107,7 @@ class Loginform extends React.Component {
                         <label>Password</label>
                         <input type="password" name="password" value={this.state.fields.password} onChange={this.handleChange} />
                         <div className="errorMsg">{this.state.errors.password}</div>
-
+                        <div><a href="/registerform">New User? Please register first.</a></div><br/>
                         <input type="submit" className="button" value="Login" />
                     </form>
                 </div>

@@ -2,7 +2,6 @@
 import React from 'react';
 import '../style.css';
 
-
 class Claimsform extends React.Component {
     constructor() {
       super();
@@ -29,13 +28,13 @@ class Claimsform extends React.Component {
       e.preventDefault();
       if (this.validateForm()) {
           let fields = {};
-          fields["firstname"]="";
-          fields["lastname"] = "";
-          fields["dateofadmission"] = "";
-          fields["dateofdischarge"] = "";
+          fields["firstName"]="";
+          fields["lastName"] = "";
+          fields["dateOfAdmission"] = "";
+          fields["dateOfDischarge"] = "";
           fields["dob"] = "";
-          fields["providername"]="";
-          fields["totalbillamount"] = "";
+          fields["providerName"]="";
+          fields["totalBillAmount"] = "";
           this.setState({fields:fields});
       
           try {
@@ -70,87 +69,86 @@ class Claimsform extends React.Component {
       let fields = this.state.fields;
       let errors = {};
       let formIsValid = true;
+      const regexddmmyyy=/^(0[1-9]|[12][0-9]|3[01])[/ /.](0[1-9]|1[012])[/ /.](19|20)\d\d$/;
 
-      if (!fields["firstname"]) {
+      if (!fields["firstName"]) {
         formIsValid = false;
-        errors["firstname"] = "*Please enter your firstname.";
+        errors["firstName"] = "*Please enter your firstName.";
       }
 
-      if (typeof fields["firstname"] !== "undefined") {
-        if (!fields["firstname"].match(/^[a-zA-Z ]*$/)) {
+      if (typeof fields["firstName"] !== "undefined") {
+        if (!fields["firstName"].match(/^[a-zA-Z ]*$/)) {
           formIsValid = false;
-          errors["firstname"] = "*Please enter alphabet characters only.";
+          errors["firstName"] = "*Please enter alphabet characters only.";
         }
       }
 
-      if (!fields["lastname"]) {
+      if (!fields["lastName"]) {
         formIsValid = false;
-        errors["lastname"] = "*Please enter your lastname.";
+        errors["lastName"] = "*Please enter your lastName.";
       }
 
-      if (typeof fields["lastname"] !== "undefined") {
-        if (!fields["lastname"].match(/^[a-zA-Z ]*$/)) {
+      if (typeof fields["lastName"] !== "undefined") {
+        if (!fields["lastName"].match(/^[a-zA-Z ]*$/)) {
           formIsValid = false;
-          errors["lastname"] = "*Please enter alphabet characters only.";
+          errors["lastName"] = "*Please enter alphabet characters only.";
         }
       }
 
-      if (!fields["dateofadmission"]) {
+      if (!fields["dateOfAdmission"]) {
         formIsValid = false;
-        errors["dateofadmission"] = "*Please enter your dateofadmission";
+        errors["dateOfAdmission"] = "*Please enter your dateOfAdmission";
       }
 
-      if (typeof fields["dateofadmission"] !== "undefined") {
-        if (!fields["dateofadmission"].match(/^[0-9]{10}$/)) {
+      if (typeof fields["dateOfAdmission"] !== "undefined") {
+        if(regexddmmyyy.test(fields["dateOfAdmission"])){
+          formIsValid = true;
+        } else {
           formIsValid = false;
-          errors["dateofadmission"] = "*Please enter valid dateofadmission";
+          errors["dateOfAdmission"] = "*Please enter valid dateOfAdmission, format is: DD/MM/YYYY";
         }
       }
 
-      if (!fields["dateofdischarge"]) {
+      if (!fields["dateOfDischarge"]) {
         formIsValid = false;
-        errors["dateofdischarge"] = "*Please enter your dateofdischarge";
+        errors["dateOfDischarge"] = "*Please enter your dateOfDischarge";
       }
 
-      if (typeof fields["dateofdischarge"] !== "undefined") {
-        if (!fields["dateofdischarge"].match(/^[0-9]{10}$/)) {
+      if (typeof fields["dateOfDischarge"] !== "undefined") {
+        if(regexddmmyyy.test(fields["dateOfDischarge"])){
+          formIsValid = true;
+        } else {
           formIsValid = false;
-          errors["dateofdischarge"] = "*Please enter valid dateofdischarge";
+          errors["dateOfDischarge"] = "*Please enter valid dateOfDischarge, format is: DD/MM/YYYY";
         }
       }
-      if (!fields["providername"]) {
+      if (!fields["providerName"]) {
         formIsValid = false;
-        errors["providername"] = "*Please enter your providername.";
+        errors["providerName"] = "*Please enter your providerName.";
       }
 
-      if (typeof fields["providername"] !== "undefined") {
-        if (!fields["state"].match(/^[a-zA-Z ]*$/)) {
+      if (typeof fields["providerName"] !== "undefined") {
+        if (!fields["providerName"].match(/^[a-zA-Z ]*$/)) {
           formIsValid = false;
-          errors["providername"] = "*Please enter valid providername.";
+          errors["providerName"] = "*Please enter valid providerName.";
         }
       }
 
-      if (!fields["totalbillamount"]) {
+      if (!fields["totalBillAmount"]) {
         formIsValid = false;
-        errors["totalbillamount"] = "*Please enter your totalbillamount.";
-      }
-
-      if (typeof fields["totalbillamount"] !== "undefined") {
-        if (!fields["totalbillamount"].match(/^[0-9]{30}$/)) {
-          formIsValid = false;
-          errors["totalbillamount"] = "*Please enter valid totalbillamount.";
-        }
+        errors["totalBillAmount"] = "*Please enter your totalBillAmount.";
       }
 
       if (!fields["dob"]) {
         formIsValid = false;
         errors["dob"] = "*Please enter your dob.";
       }
-
       if (typeof fields["dob"] !== "undefined") {
-        if (!fields["dob"].match(/^[0-9]{10}$/)) {
+        if(regexddmmyyy.test(fields["dob"])){
+          formIsValid = true;
+        } else {
           formIsValid = false;
-          errors["dob"] = "*Please enter valid dob.";
+          errors["dob"] = "*Please enter valid dob, date format is: DD/MM/YYYY";
         }
       }
 
@@ -158,11 +156,7 @@ class Claimsform extends React.Component {
         errors: errors
       });
       return formIsValid;
-
-
     }
-
-
 
   render() {
     return (
@@ -170,29 +164,29 @@ class Claimsform extends React.Component {
      <div id="register">
         <h3>Claims Registration Portal</h3>
         <form method="post"  name="userClaimsForm"  onSubmit= {this.submituserClaimsForm} >
-        <label>Firstname</label>
-        <input type="text" name="firstname" value={this.state.fields.firstname} onChange={this.handleChange} />
-        <div className="errorMsg">{this.state.errors.firstname}</div>
-        <label>Lastname</label>
-        <input type="text" name="lastname" value={this.state.fields.lastname} onChange={this.handleChange} />
-        <div className="errorMsg">{this.state.errors.lastname}</div>
-        <label>Dateofadmission</label>
-        <input type="text" name="dateofadmission" value={this.state.fields.dateofadmission} onChange={this.handleChange} />
-        <div className="errorMsg">{this.state.errors.dateofadmission}</div>
+        <label>First Name</label>
+        <input type="text" name="firstName" value={this.state.fields.firstName} onChange={this.handleChange} />
+        <div className="errorMsg">{this.state.errors.firstName}</div>
+        <label>Last Name</label>
+        <input type="text" name="lastName" value={this.state.fields.lastName} onChange={this.handleChange} />
+        <div className="errorMsg">{this.state.errors.lastName}</div>
+        <label>Date Of Admission</label>
+        <input type="text" name="dateOfAdmission" value={this.state.fields.dateOfAdmission} onChange={this.handleChange} />
+        <div className="errorMsg">{this.state.errors.dateOfAdmission}</div>
 
-        <label>Dateofdischarge:</label>
-        <input type="text" name="dateofdischarge" value={this.state.fields.dateofdischarge} onChange={this.handleChange}   />
-        <div className="errorMsg">{this.state.errors.dateofdischarge}</div>
+        <label>Date Of Discharge:</label>
+        <input type="text" name="dateOfDischarge" value={this.state.fields.dateOfDischarge} onChange={this.handleChange}   />
+        <div className="errorMsg">{this.state.errors.dateOfDischarge}</div>
        
-        <label>Providername:</label>
-        <input type="text" name="providername" value={this.state.fields.providername} onChange={this.handleChange}  />
-        <div className="errorMsg">{this.state.errors.providername}</div>
+        <label>Provider Name:</label>
+        <input type="text" name="providerName" value={this.state.fields.providerName} onChange={this.handleChange}  />
+        <div className="errorMsg">{this.state.errors.providerName}</div>
 
-        <label>Totalbillamount</label>
-        <input type="text" name="totalbillamount" value={this.state.fields.totalbillamount} onChange={this.handleChange} />
-        <div className="errorMsg">{this.state.errors.totalbillamount}</div>
-        <label>Dob</label>
-        <input type="text" name="dob" value={this.state.fields.pan} onChange={this.handleChange} />
+        <label>Total Bill Amount</label>
+        <input type="text" name="totalBillAmount" value={this.state.fields.totalBillAmount} maxLength={13} onChange={this.handleChange} />
+        <div className="errorMsg">{this.state.errors.totalBillAmount}</div>
+        <label>Date Of Birth</label>
+        <input type="text" name="dob" value={this.state.fields.dob} onChange={this.handleChange} />
         <div className="errorMsg">{this.state.errors.dob}</div>
 
 
