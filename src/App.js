@@ -7,6 +7,7 @@ import RegisterForm from "./registration/RegisterForm";
 import Loginform from "./login/Loginform";
 import Claimsform from "./claims/Claimsform";
 import SearchClaims from "./claims/SearchClaims";
+import UpdateClaims from "./claims/UpdateClaims";
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
         <Route path="/loginform" component={Loginform}></Route>
         <Route path="/claimsform" component={Claimsform}></Route>
         <Route path="/searchclaims" component={SearchClaims}></Route>
+        <Route path="/updateclaims" component={UpdateClaims}></Route>
         <Route path="/" base component={Loginform}></Route>
       </Switch>
     </Router>
