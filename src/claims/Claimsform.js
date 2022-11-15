@@ -52,7 +52,7 @@ class Claimsform extends React.Component {
                } else {
                    alert("Claim Submitted successfully.");
                    //<Redirect replace to="/loginform"/>
-                  // this.props.history.push('/loginform');
+                   this.props.history.push('/searchclaims');
                }
                return response;
            })
