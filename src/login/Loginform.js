@@ -47,7 +47,7 @@ class Loginform extends React.Component {
                         throw Error('could not fetch the data for that resource');
                     } else {
                         alert("Login was successful.");
-                        this.props.history.push('/claimsform');
+                        this.props.history.push('/searchclaims');
                     }
                     return response;
                 })

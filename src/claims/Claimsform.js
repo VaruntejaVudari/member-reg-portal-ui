@@ -162,7 +162,7 @@ class Claimsform extends React.Component {
     return (
     <div id="main-registration-container">
      <div id="register">
-        <h3>Claims Registration Portal</h3>
+        <h3>Claims Submit Portal</h3>
         <form method="post"  name="userClaimsForm"  onSubmit= {this.submituserClaimsForm} >
         <label>First Name</label>
         <input type="text" name="firstName" value={this.state.fields.firstName} onChange={this.handleChange} />
