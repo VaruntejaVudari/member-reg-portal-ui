@@ -99,7 +99,7 @@ class Loginform extends React.Component {
         return (
             <div id="main-registration-container">
                 <div id="register">
-                    <h3>Login Form</h3>
+                    <h3>Member Login Form</h3>
                     <form method="post" name="userLoginForm" onSubmit={this.submitUserLoginForm} >
                         <label>Username</label>
                         <input type="text" name="username" value={this.state.fields.username} onChange={this.handleChange} />
