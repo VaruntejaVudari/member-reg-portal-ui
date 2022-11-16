@@ -25,31 +25,58 @@ class SearchClaims extends React.Component {
     searchuserClaimsForm(e) {
         e.preventDefault();
         if (this.validateForm()) {
+
+            let fieldsId = this.state.fields;
             let fields = {};
             fields["memberId"] = "";
             this.setState({ fields: fields });
 
-            try {
-                fetch("http://localhost:8081/memberSubmitClaims/retriveSubmitClaimsDetails", {
-                    headers: {
-                        "Accept": "application/json",
-                        "Content-Type": "application/json"
-                    },
-                    method: 'GET',
-                    //body: JSON.stringify(this.state.fields),
-                }).then(response => {
-                    console.log(response);
-                    if (!response.ok) {
-                        throw Error('could not fetch the data for that resource');
-                    } else {
-                        alert("Retrieved Claims Submitted successfully.");
-                        //<Redirect replace to="/loginform"/>
-                        // this.props.history.push('/loginform');
-                    }
-                    return response;
-                })
-            } catch (err) {
-                console.log(err);
+            if ((typeof fieldsId["memberId"] !== "undefined") && (fieldsId["memberId"] !== '')) {
+                try {
+                    fetch("http://localhost:8080/memberSubmitClaims/retriveSubmitClaimsDetailsByMemberId", {
+                        headers: {
+                            "Accept": "application/json",
+                            "Content-Type": "application/json"
+                        },
+                        method: 'POST',
+                        body: JSON.stringify(this.state.fields),
+                    }).then(response => {
+                        console.log(response);
+                        if (!response.ok) {
+                            throw Error('could not fetch the data for that resource');
+                        } else {
+                            alert("Retrieved claims number details successfully.");
+                            //<Redirect replace to="/loginform"/>
+                            // this.props.history.push('/loginform');
+                        }
+                        return response;
+                    })
+                } catch (err) {
+                    console.log(err);
+                }
+            } else {
+                try {
+                    fetch("http://localhost:8080/memberSubmitClaims/retriveSubmitClaimsDetails", {
+                        headers: {
+                            "Accept": "application/json",
+                            "Content-Type": "application/json"
+                        },
+                        method: 'GET',
+                        //body: JSON.stringify(this.state.fields),
+                    }).then(response => {
+                        console.log(response);
+                        if (!response.ok) {
+                            throw Error('could not fetch the data for that resource');
+                        } else {
+                            alert("Retrieved all submit claims successfully.");
+                            //<Redirect replace to="/loginform"/>
+                            // this.props.history.push('/loginform');
+                        }
+                        return response;
+                    })
+                } catch (err) {
+                    console.log(err);
+                }
             }
         }
     }
@@ -67,8 +94,8 @@ class SearchClaims extends React.Component {
 
         if ((typeof fields["memberId"] !== "undefined") && (fields["memberId"] !== '')) {
             if (!Number(fields["memberId"])) {
-                //formIsValid = false;
-                //errors["memberId"] = "*Please enter numbers only.";
+                formIsValid = false;
+                errors["memberId"] = "*Please enter numbers only.";
             }
         }
 
@@ -85,11 +112,11 @@ class SearchClaims extends React.Component {
                     <h3>Claims Search Portal</h3>
                     <form method="post" name="userClaimsForm" onSubmit={this.searchuserClaimsForm} >
                         <label>Claims No</label>
-                        <input type="text" name="memberId" value={this.state.fields.memberId} onChange={this.handleChange} disabled="true"/>
+                        <input type="text" name="memberId" value={this.state.fields.memberId} onChange={this.handleChange} />
                         <div className="errorMsg">{this.state.errors.memberId}</div>
-                        
+
                         <input type="submit" className="button" value="Search" />
-                        <div><a href="/claimsform">Please add claims and submit.</a></div><br/>
+                        <div><a href="/claimsform">Please add claims and submit.</a></div><br />
                         {/* <input type="submit" className="button" value="Add" /> */}
                     </form>
                 </div>
