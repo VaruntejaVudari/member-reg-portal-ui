@@ -82,26 +82,26 @@ class UpdateClaims extends React.Component {
         }
 
         if (!fields["firstName"]) {
-            formIsValid = false;
-            errors["firstName"] = "*Please enter your firstName.";
+            //formIsValid = false;
+           //errors["firstName"] = "*Please enter your firstName.";
         }
 
         if (typeof fields["firstName"] !== "undefined") {
             if (!fields["firstName"].match(/^[a-zA-Z ]*$/)) {
-                formIsValid = false;
-                errors["firstName"] = "*Please enter alphabet characters only.";
+                //formIsValid = false;
+                //errors["firstName"] = "*Please enter alphabet characters only.";
             }
         }
 
         if (!fields["lastName"]) {
-            formIsValid = false;
-            errors["lastName"] = "*Please enter your lastName.";
+            //formIsValid = false;
+            //errors["lastName"] = "*Please enter your lastName.";
         }
 
         if (typeof fields["lastName"] !== "undefined") {
             if (!fields["lastName"].match(/^[a-zA-Z ]*$/)) {
-                formIsValid = false;
-                errors["lastName"] = "*Please enter alphabet characters only.";
+                //formIsValid = false;
+                //errors["lastName"] = "*Please enter alphabet characters only.";
             }
         }
 
@@ -132,6 +132,17 @@ class UpdateClaims extends React.Component {
                 errors["dateOfDischarge"] = "*Please enter valid dateOfDischarge, format is: DD/MM/YYYY";
             }
         }
+
+        if ((typeof fields["dateOfAdmission"] !== "undefined") && (typeof fields["dateOfDischarge"] !== "undefined")) {
+            var pattern = /(\d{2})\/(\d{2})\/(\d{4})/;
+            var eDate = new Date(fields["dateOfDischarge"].replace(pattern, '$3-$2-$1'));
+            var sDate = new Date(fields["dateOfAdmission"].replace(pattern, '$3-$2-$1'));
+            if (eDate < sDate) {
+                formIsValid = false;
+                alert("Discharge Date can not be less than Admission Date");
+            }
+        }
+
         if (!fields["providerName"]) {
             formIsValid = false;
             errors["providerName"] = "*Please enter your providerName.";
@@ -147,6 +158,13 @@ class UpdateClaims extends React.Component {
         if (!fields["totalBillAmount"]) {
             formIsValid = false;
             errors["totalBillAmount"] = "*Please enter your totalBillAmount.";
+        }
+
+        if ((typeof fields["totalBillAmount"] !== "undefined") && (fields["totalBillAmount"] !== '')) {
+            if (!Number(fields["totalBillAmount"])) {
+                formIsValid = false;
+                errors["totalBillAmount"] = "*Please enter numbers only.";
+            }
         }
 
         if (!fields["dob"]) {
@@ -178,10 +196,10 @@ class UpdateClaims extends React.Component {
                         <input type="text" name="memberId" value={this.state.fields.memberId} onChange={this.handleChange} />
                         <div className="errorMsg">{this.state.errors.memberId}</div>
                         <label>First Name</label>
-                        <input type="text" name="firstName" value={this.state.fields.firstName} onChange={this.handleChange} />
+                        <input type="text" name="firstName" value={"Varun"} onChange={this.handleChange} readOnly={true}/>
                         <div className="errorMsg">{this.state.errors.firstName}</div>
                         <label>Last Name</label>
-                        <input type="text" name="lastName" value={this.state.fields.lastName} onChange={this.handleChange} />
+                        <input type="text" name="lastName" value={"Tej"} onChange={this.handleChange} readOnly={true}/>
                         <div className="errorMsg">{this.state.errors.lastName}</div>
                         <label>Date Of Admission</label>
                         <input type="text" name="dateOfAdmission" value={this.state.fields.dateOfAdmission} onChange={this.handleChange} />

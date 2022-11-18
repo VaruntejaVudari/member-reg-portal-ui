@@ -122,7 +122,7 @@ class RegisterForm extends React.Component {
         if (typeof fields["contactno"] !== "undefined") {
             if (!fields["contactno"].match(/^[0-9]{10}$/)) {
                 formIsValid = false;
-                errors["contactno"] = "*Please enter valid contact no.";
+                errors["contactno"] = "*Please enter 10 digit valid contact no.";
             }
         }
 
