@@ -150,8 +150,9 @@ class Claimsform extends React.Component {
       errors["totalBillAmount"] = "*Please enter your totalBillAmount.";
     }
 
+    const re = /^[0-9\b]+$/;
     if ((typeof fields["totalBillAmount"] !== "undefined") && (fields["totalBillAmount"] !== '')) {
-      if (!Number(fields["totalBillAmount"])) {
+      if (!re.test(fields["totalBillAmount"])) {
         formIsValid = false;
         errors["totalBillAmount"] = "*Please enter numbers only.";
       }

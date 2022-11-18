@@ -92,8 +92,9 @@ class SearchClaims extends React.Component {
             //errors["memberId"] = "*Please enter your claims no.";
         }
 
+        const re = /^[0-9\b]+$/;
         if ((typeof fields["memberId"] !== "undefined") && (fields["memberId"] !== '')) {
-            if (!Number(fields["memberId"])) {
+            if (!re.test(fields["memberId"])) {
                 formIsValid = false;
                 errors["memberId"] = "*Please enter numbers only.";
             }

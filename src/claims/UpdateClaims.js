@@ -68,6 +68,7 @@ class UpdateClaims extends React.Component {
         let errors = {};
         let formIsValid = true;
         const regexddmmyyy = /^(0[1-9]|[12][0-9]|3[01])[/ /.](0[1-9]|1[012])[/ /.](19|20)\d\d$/;
+        const re = /^[0-9\b]+$/;
 
         if (!fields["memberId"]) {
             formIsValid = false;
@@ -75,7 +76,7 @@ class UpdateClaims extends React.Component {
         }
 
         if ((typeof fields["memberId"] !== "undefined") && (fields["memberId"] !== '')) {
-            if (!Number(fields["memberId"])) {
+            if (!re.test(fields["memberId"])) {
                 formIsValid = false;
                 errors["memberId"] = "*Please enter numbers only.";
             }
@@ -159,9 +160,9 @@ class UpdateClaims extends React.Component {
             formIsValid = false;
             errors["totalBillAmount"] = "*Please enter your totalBillAmount.";
         }
-
+        
         if ((typeof fields["totalBillAmount"] !== "undefined") && (fields["totalBillAmount"] !== '')) {
-            if (!Number(fields["totalBillAmount"])) {
+            if (!re.test(fields["totalBillAmount"])) {
                 formIsValid = false;
                 errors["totalBillAmount"] = "*Please enter numbers only.";
             }
