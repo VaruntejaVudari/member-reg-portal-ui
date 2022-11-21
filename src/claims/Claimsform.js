@@ -27,6 +27,8 @@ class Claimsform extends React.Component {
   submituserClaimsForm(e) {
     e.preventDefault();
     if (this.validateForm()) {
+
+      console.log("I am sending a request:");
       let fields = {};
       fields["firstName"] = "";
       fields["lastName"] = "";

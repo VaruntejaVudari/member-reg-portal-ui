@@ -7,7 +7,9 @@ class SearchClaims extends React.Component {
         super();
         this.state = {
             fields: {},
-            errors: {}
+            errors: {},
+            res: {},
+            resList: []
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -22,62 +24,99 @@ class SearchClaims extends React.Component {
         });
     }
 
-    searchuserClaimsForm(e) {
+    async searchuserClaimsForm(e) {
         e.preventDefault();
         if (this.validateForm()) {
 
+            console.log("I am sending a request:");
             let fieldsId = this.state.fields;
             let fields = {};
+            this.setState({
+                res: '',
+                resList: [],
+                fields: fields
+            });
             fields["memberId"] = "";
-            this.setState({ fields: fields });
 
             if ((typeof fieldsId["memberId"] !== "undefined") && (fieldsId["memberId"] !== '')) {
                 try {
-                    fetch("http://localhost:8080/memberSubmitClaims/retriveSubmitClaimsDetailsByMemberId", {
+                    const response = await fetch("http://localhost:8080/memberSubmitClaims/retriveSubmitClaimsDetailsByMemberId", {
                         headers: {
                             "Accept": "application/json",
                             "Content-Type": "application/json"
                         },
                         method: 'POST',
                         body: JSON.stringify(this.state.fields),
-                    }).then(response => {
-                        console.log(response);
-                        if (!response.ok) {
-                            throw Error('could not fetch the data for that resource');
-                        } else {
-                            alert("Retrieved claims number details successfully.");
-                            //<Redirect replace to="/loginform"/>
-                            // this.props.history.push('/loginform');
-                        }
-                        return response;
                     })
+                    if (!response.ok) {
+                        alert('No records found for selected criteria.');
+                        throw Error('could not fetch the data for that resource');
+                    } else {
+                        const data = await response.json();
+                        this.setState({
+                            res: data
+                        });
+                        alert('Retrieved claims number: ' + data.memberId + ' details successfully.');
+                    }
                 } catch (err) {
                     console.log(err);
                 }
             } else {
                 try {
-                    fetch("http://localhost:8080/memberSubmitClaims/retriveSubmitClaimsDetails", {
+                    const response = await fetch("http://localhost:8080/memberSubmitClaims/retriveSubmitClaimsDetails", {
                         headers: {
                             "Accept": "application/json",
                             "Content-Type": "application/json"
                         },
                         method: 'GET',
                         //body: JSON.stringify(this.state.fields),
-                    }).then(response => {
-                        console.log(response);
-                        if (!response.ok) {
-                            throw Error('could not fetch the data for that resource');
-                        } else {
-                            alert("Retrieved all submit claims successfully.");
-                            //<Redirect replace to="/loginform"/>
-                            // this.props.history.push('/loginform');
-                        }
-                        return response;
                     })
+                    if (!response.ok) {
+                        alert('No records found!.');
+                        throw Error('could not fetch the data for that resource');
+                    } else {
+                        const resp = await response.json();
+                        this.setState({
+                            resList: resp
+                        });
+                        alert("Retrieved all submit claims successfully.");
+                    }
                 } catch (err) {
                     console.log(err);
                 }
             }
+        }
+    }
+
+    async updateClaims (e,memberId) {
+        console.log("updateClaims called: " + memberId);
+
+        e.preventDefault();
+        this.setState({
+            res: '',
+            resList: [],
+        });
+        let inputData = {memberId};
+        try {
+            const response = await fetch("http://localhost:8080/memberSubmitClaims/retriveSubmitClaimsDetailsByMemberId", {
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                method: 'POST',
+                body: JSON.stringify(inputData),
+            })
+            if (!response.ok) {
+                alert('No records found for selected criteria.');
+                throw Error('could not fetch the data for that resource');
+            } else {
+                const data = await response.json();
+                console.log("data: " + data.firstName +','+ data.lastName);
+                //alert('Redirect to claims update form by using claims number: ' + memberId + '');
+                this.props.history.push('/updateclaims');
+            }
+        } catch (err) {
+            console.log(err);
         }
     }
 
@@ -119,6 +158,24 @@ class SearchClaims extends React.Component {
                         <input type="submit" className="button" value="Search" />
                         <div><a href="/claimsform">Please add claims and submit.</a></div><br />
                         {/* <input type="submit" className="button" value="Add" /> */}
+
+                        {Object.keys(this.state.res).map((key, idx) => (
+                            <p key={idx}>{this.state.res[key]}</p>
+                        ))}
+
+                        {this.state.resList.map((item,i) => (
+                            <div key={i}> 
+                                {/* <div>Claims No: {item.memberId} <a href="#" onClick={(e) => this.updateClaims(e,item.memberId)}>Edit</a></div> */}
+                                <div>Claims No: <a href="#" onClick={(e) => this.updateClaims(e,item.memberId)}>{item.memberId}</a></div>
+                                <div>First Name: {item.firstName}</div>
+                                <div>Last Name: {item.lastName}</div>
+                                <div>Date Of Birth: {item.dob}</div>
+                                <div>Date Of Admission: {item.dateOfAdmission}</div>
+                                <div>Date Of Discharge: {item.dateOfDischarge}</div>
+                                <div>Provider Name: {item.providerName}</div>
+                                <div>Total Bill Amount: {item.totalBillAmount}</div>
+                            </div>
+                        ))}
                     </form>
                 </div>
             </div>
