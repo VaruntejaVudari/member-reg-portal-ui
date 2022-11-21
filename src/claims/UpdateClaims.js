@@ -196,7 +196,7 @@ class UpdateClaims extends React.Component {
                     <h3>Claims Update Portal</h3>
                     <form method="post" name="userClaimsForm" onSubmit={this.updateuserClaimsForm} >
                         <label>Member Id</label>
-                        <input type="text" name="memberId" value={this.state.fields.memberId} onChange={this.handleChange} />
+                        <input type="text" name="memberId" value={22} onChange={this.handleChange} readOnly={true}/>
                         <div className="errorMsg">{this.state.errors.memberId}</div>
                         <label>First Name</label>
                         <input type="text" name="firstName" value={"Varun"} onChange={this.handleChange} readOnly={true}/>
