@@ -6,7 +6,11 @@ class UpdateClaims extends React.Component {
     constructor() {
         super();
         this.state = {
-            fields: {},
+            fields: {
+                memberId: 22,
+                firstName: "Varun",
+                lastName: "Tej"
+            },
             errors: {}
         }
 
@@ -30,13 +34,14 @@ class UpdateClaims extends React.Component {
 
             console.log("I am sending a request:");
             let fields = {};
-            fields["firstName"] = "";
-            fields["lastName"] = "";
-            fields["dateOfAdmission"] = "";
-            fields["dateOfDischarge"] = "";
-            fields["dob"] = "";
-            fields["providerName"] = "";
-            fields["totalBillAmount"] = "";
+            // fields["memberId"] = "";
+            // fields["firstName"] = "";
+            // fields["lastName"] = "";
+            // fields["dateOfAdmission"] = "";
+            // fields["dateOfDischarge"] = "";
+            // fields["dob"] = "";
+            // fields["providerName"] = "";
+            // fields["totalBillAmount"] = "";
             this.setState({ fields: fields });
 
             try {
@@ -54,7 +59,7 @@ class UpdateClaims extends React.Component {
                     } else {
                         alert("Claims Updated successfully.");
                         //<Redirect replace to="/loginform"/>
-                        // this.props.history.push('/loginform');
+                        this.props.history.push('/searchclaims');
                     }
                     return response;
                 })
@@ -73,8 +78,8 @@ class UpdateClaims extends React.Component {
         const re = /^[0-9\b]+$/;
 
         if (!fields["memberId"]) {
-            formIsValid = false;
-            errors["memberId"] = "*Please enter your member id.";
+            //formIsValid = false;
+            //errors["memberId"] = "*Please enter your member id.";
         }
 
         if ((typeof fields["memberId"] !== "undefined") && (fields["memberId"] !== '')) {
@@ -176,7 +181,15 @@ class UpdateClaims extends React.Component {
         }
         if (typeof fields["dob"] !== "undefined") {
             if (regexddmmyyy.test(fields["dob"])) {
-                formIsValid = true;
+                var parts = fields["dob"].split("/");
+                var dtDOB = new Date(parts[1] + "/" + parts[0] + "/" + parts[2]);
+                var dtCurrent = new Date();
+                if ((dtCurrent.getFullYear() - dtDOB.getFullYear() < 18) || (dtCurrent.getFullYear() - dtDOB.getFullYear() > 100)) {
+                    formIsValid = false;
+                    errors["dob"] = "*Eligibility 18 years or max 100 years ONLY.";
+                } else {
+                    formIsValid = true;
+                }
             } else {
                 formIsValid = false;
                 errors["dob"] = "*Please enter valid dob, date format is: DD/MM/YYYY";
@@ -196,13 +209,13 @@ class UpdateClaims extends React.Component {
                     <h3>Claims Update Portal</h3>
                     <form method="post" name="userClaimsForm" onSubmit={this.updateuserClaimsForm} >
                         <label>Member Id</label>
-                        <input type="text" name="memberId" value={22} onChange={this.handleChange} readOnly={true}/>
+                        <input type="text" name="memberId" value={22} readOnly={true}/>
                         <div className="errorMsg">{this.state.errors.memberId}</div>
                         <label>First Name</label>
-                        <input type="text" name="firstName" value={"Varun"} onChange={this.handleChange} readOnly={true}/>
+                        <input type="text" name="firstName" value={"Varun"} readOnly={true}/>
                         <div className="errorMsg">{this.state.errors.firstName}</div>
                         <label>Last Name</label>
-                        <input type="text" name="lastName" value={"Tej"} onChange={this.handleChange} readOnly={true}/>
+                        <input type="text" name="lastName" value={"Tej"} readOnly={true}/>
                         <div className="errorMsg">{this.state.errors.lastName}</div>
                         <label>Date Of Admission</label>
                         <input type="text" name="dateOfAdmission" value={this.state.fields.dateOfAdmission} onChange={this.handleChange} />

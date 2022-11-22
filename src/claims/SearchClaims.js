@@ -36,7 +36,7 @@ class SearchClaims extends React.Component {
                 resList: [],
                 fields: fields
             });
-            fields["memberId"] = "";
+            //fields["memberId"] = "";
 
             if ((typeof fieldsId["memberId"] !== "undefined") && (fieldsId["memberId"] !== '')) {
                 try {

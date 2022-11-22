@@ -30,13 +30,13 @@ class Claimsform extends React.Component {
 
       console.log("I am sending a request:");
       let fields = {};
-      fields["firstName"] = "";
-      fields["lastName"] = "";
-      fields["dateOfAdmission"] = "";
-      fields["dateOfDischarge"] = "";
-      fields["dob"] = "";
-      fields["providerName"] = "";
-      fields["totalBillAmount"] = "";
+      // fields["firstName"] = "";
+      // fields["lastName"] = "";
+      // fields["dateOfAdmission"] = "";
+      // fields["dateOfDischarge"] = "";
+      // fields["dob"] = "";
+      // fields["providerName"] = "";
+      // fields["totalBillAmount"] = "";
       this.setState({ fields: fields });
 
       try {
